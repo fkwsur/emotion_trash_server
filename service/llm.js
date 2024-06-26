@@ -45,14 +45,10 @@ const test = async (data) => {
                 "role": "assistant",
                 "content": `${response.choices[0].message.content}`
               })
-              // console.log(message_set)
-              // return question();
               return message_set;
 }
 
 const question = (question) => {
-  console.log("하이")
-  // let answer = readline.question("질문을 입력하세요");
   message_set.push({
     "role": "user",
     "content": `${question}`

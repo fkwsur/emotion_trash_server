@@ -51,19 +51,39 @@ module.exports = {
   subscriber,
   publisher,
   io: io,
-  ChattingAndAlarm: async () => {
+  Chatting: async () => {
     io.on("connection", (socket) => {
       // llm 대답 오는거 확인하려고 했는데 금액초과됨
       socket.on("chat", async (obj) => {
         try {
           if(obj !== undefined){
             let answer = await question(obj)
-            console.log(answer)
+            publisher.publish("chatting", JSON.stringify(answer));
           }
         } catch (error) {
           console.log(error);
         }
       });
+
+      socket.on("roomName", async (roomName) => {
+        try {
+          console.log(roomName)
+          await socket.join(roomName);
+        } catch (e) {
+          console.log(e);
+        }
+      });
+
+    });
+
+    subscriber.subscribe("chatting", (obj) => {
+      try {
+        let result = JSON.parse(obj);
+        result.shift()
+        io.to("현지").emit("chatting", result);
+      } catch (error) {
+        console.log(error);
+      }
     });
 
     kafkaConnect();

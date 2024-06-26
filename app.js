@@ -35,4 +35,4 @@ socket.io.attach(httpServer, {
   },
 });
 
-socket.ChattingAndAlarm();
+socket.Chatting();
