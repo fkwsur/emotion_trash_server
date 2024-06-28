@@ -27,9 +27,9 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING(20),
         allowNull: false,
       },
-      age_group: {
-        type: DataTypes.INTEGER(3),
-        allowNull: true,
+      birth: {
+        type: DataTypes.DATEONLY,
+        allowNull: true
       },
       gender: {
         type: DataTypes.STRING(10),
@@ -43,6 +43,10 @@ module.exports = (sequelize, DataTypes) => {
       platform: {
         type: DataTypes.STRING(20),
         allowNull: false,
+      },
+      refresh_token: {
+        type: DataTypes.STRING(200),
+        allowNull: true
       },
       createdAt: {
         type: DataTypes.DATE,

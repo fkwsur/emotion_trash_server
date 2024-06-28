@@ -56,5 +56,5 @@ module.exports = (sequelize, DataTypes) => {
     }
     return (et_chatting_room.id = pri_id);
   });
-  return cw_chatting_room;
+  return et_chatting_room;
 };
