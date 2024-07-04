@@ -53,6 +53,65 @@ db.sequelize
     process.exit(0);
 });
 
+
+const passUrls = [
+  "/api/v1/user/signup",
+  "/api/v1/user/signin",
+  "/api/v1/user/check/phone",
+  "/api/v1/user/get/password",
+  "/api/v1/user/auto/signin",
+  "/api/v1/user/issuetoken",
+];
+
+const loginPageURL = process.env.LOGINPAGE_URL;
+
+app.use(async (req, res, next) => {
+  try {
+    if (req.url.startsWith("/api/v1")) {
+      const QuerySection = req.url.split("?")[1];
+
+      if (QuerySection != undefined) {
+        if (
+          QuerySection.includes("insert") ||
+          QuerySection.includes("select") ||
+          QuerySection.includes("delete") ||
+          QuerySection.includes("update")
+        ) {
+          return res.redirect(loginPageURL);
+        }
+      }
+      if (req.headers.authorization == undefined) {
+        if (passUrls.includes(req.url.split("?")[0])) {
+          return next();
+        }
+        console.log("token is undefined");
+        return res.redirect(loginPageURL);
+      }
+      // 오류정책이 필요 // 토큰 유무만 검사
+      const isOk = jwt.verifyToken(req.headers.authorization);
+      if (isOk === "") {
+        console.log("token is may be error, return null from verifytoken");
+        return res.redirect(loginPageURL);
+      }
+      next();
+    } else {
+      console.log("this request is not available. check from routes");
+      return res.redirect(loginPageURL);
+    }
+  } catch (error) {
+    console.log(error);
+    if (error.name.includes("TokenExpiredError")) {
+      return res.status(200).json({ expired: true });
+    }
+    console.log("this error is not handling error");
+    return res.redirect(loginPageURL);
+  } finally {
+      SlackAPI.LoggingChannel({
+      url: req.url,
+    });
+  }
+});
+
 const httpServer = require("http")
   .createServer(app)
   .listen(8081 || env.PORT, async () => {

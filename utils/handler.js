@@ -16,7 +16,7 @@ module.exports = {
         }
       }
     }
-    if (err.code == 13 || err.code == 30) {
+    if (err.code == 13) {
       return {
         error: error_code[code],
         platform: err.platform,
