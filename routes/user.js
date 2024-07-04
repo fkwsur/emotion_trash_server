@@ -5,7 +5,7 @@ router.post("/signup", controller.SignUp);
 router.get("/check/phone", controller.CheckPhone);
 router.get("/check/oauthid", controller.CheckOauthID);
 router.post("/signin", controller.SignIn);
-// router.post("/unregister", controller.Unregister);
+router.post("/unregister", controller.Unregister);
 // router.post("/reset/password", controller.ResetPassword);
 router.post("/update/password", controller.ChangePassword);
 router.post("/update/userinfo", controller.UpdateUserInfo);

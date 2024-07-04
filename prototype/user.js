@@ -198,4 +198,13 @@ U.prototype.UpdateNewAppKey = async (authCode, id) => {
   }
 };
 
+U.prototype.Unregister = async (t) => {
+  try {
+    await et_user.destroy({ where: { id: t.authorization } });
+    return;
+  } catch (error) {
+    throw error;
+  }
+};
+
 module.exports = U;

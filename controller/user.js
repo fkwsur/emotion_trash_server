@@ -98,4 +98,17 @@ module.exports = {
     }
   },
 
+  Unregister: async (req,res) => {
+    try {
+      let t = user.VerifyTokenBind(req.headers);
+      let u = user.UserBind(req.body);
+      const rows = await user.findById(t.authorization);
+      await user.CheckAppKey(u, rows);
+      await user.Unregister(t);
+      return r.ReturnBind(res,{ result: true});
+    } catch (error) {
+      return res.status(200).send(errorHandler(error));
+    }
+  },
+
 };
